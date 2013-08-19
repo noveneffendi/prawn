@@ -45,6 +45,23 @@ describe "Prawn::Table" do
     end
   end
 
+  describe "bugreport" do
+    it "illustrates issue #502" do
+      pdf = Prawn::Document.new
+      first = {:content=>"Foooo fo foooooo",:width=>50,:align=>:center}
+      second = {:content=>"Foooo",:colspan=>2,:width=>70,:align=>:center}
+      third = {:content=>"fooooooooooo, fooooooooooooo, fooo, foooooo fooooo",:width=>55,:align=>:center}
+      fourth = {:content=>"Bar",:width=>15,:align=>:center}
+
+      table_content = [[
+      first,
+      [[second],[third,fourth]]
+      ]]
+      pdf.move_down(20)
+      pdf.table(table_content)
+    end
+  end
+
   describe "#initialize" do
     before(:each) do
       @pdf = Prawn::Document.new
@@ -1176,7 +1193,6 @@ describe "colspan / rowspan" do
                       :colspan => 3}],
                     ["A", "B", "C"]],
                    :width => 200)
-
     t.column_widths.inject(0) { |sum, w| sum + w }.
       should be_within(0.01).of(200)
   end
